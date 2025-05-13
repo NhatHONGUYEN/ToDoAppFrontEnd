@@ -6,7 +6,7 @@ import { Task } from '../models/task.model';
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   // URL de ton API backend (ajuste le port si nécessaire)
-  private apiUrl = 'http://localhost:8081/api/tasks';
+  private apiUrl = 'http://localhost:8080/api/tasks';
 
   constructor(private http: HttpClient) {}
 

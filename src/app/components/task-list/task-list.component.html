@@ -1,1 +1,19 @@
-<h1>Ma liste de tâches (route protégée)</h1>
+<h1>Mes tâches</h1>
+
+<nav>
+  <button (click)="load('all')">Toutes</button>
+  <button (click)="load('pending')">En cours</button>
+  <button (click)="load('done')">Terminées</button>
+</nav>
+
+<div *ngIf="loading">Chargement…</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<ul>
+  <li *ngFor="let task of tasks">
+    {{ task.title }} — {{ task.dueDate | date }} —
+    <span [class.done]="task.completed">
+      {{ task.completed ? "✓" : "✗" }}
+    </span>
+  </li>
+</ul>

@@ -4,6 +4,7 @@ import {
   importProvidersFrom,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -14,9 +15,9 @@ import { AppComponent } from './app/app.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './app/app-init';
 import { AppAuthGuard } from './app/app-auth.guard';
-
 import { environment } from './environments/environment';
 import { TaskListComponent } from './app/components/task-list/task-list.component';
+import { TaskFormComponent } from './app/components/task-form/task-form.component';
 
 if (environment.production) {
   enableProdMode();
@@ -24,23 +25,30 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    importProvidersFrom(ReactiveFormsModule, FormsModule),
     provideHttpClient(withInterceptorsFromDi()),
-
     importProvidersFrom(KeycloakAngularModule),
-
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
     },
-
-    // --- Voilà le routing protégé par Keycloak ---
     provideRouter([
       { path: '', redirectTo: 'tasks', pathMatch: 'full' },
       {
         path: 'tasks',
         component: TaskListComponent,
+        canActivate: [AppAuthGuard],
+      },
+      {
+        path: 'tasks/new',
+        component: TaskFormComponent,
+        canActivate: [AppAuthGuard],
+      },
+      {
+        path: 'tasks/:id/edit',
+        component: TaskFormComponent,
         canActivate: [AppAuthGuard],
       },
       { path: '**', redirectTo: 'tasks' },
