@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
 })
@@ -59,5 +60,15 @@ export class TaskListComponent implements OnInit {
           this.loading = false;
         },
       });
+  }
+
+  deleteTask(id: number | undefined) {
+    if (id === undefined) return;
+
+    this.taskService.delete(id).subscribe({
+      next: () => {
+        this.tasks = this.tasks.filter((task) => task.id !== id);
+      },
+    });
   }
 }

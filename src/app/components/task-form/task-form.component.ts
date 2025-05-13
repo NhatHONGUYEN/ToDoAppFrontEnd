@@ -29,7 +29,6 @@ export class TaskFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Initialiser le formulaire ici au lieu de le faire comme propriété de classe
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -41,19 +40,22 @@ export class TaskFormComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.taskId = +params['id'];
-        this.taskService
-          .list('all') // ou mieux: créer un endpoint GET /{id}
-          .subscribe((tasks) => {
-            const t = tasks.find((task) => task.id === this.taskId);
-            if (t) {
-              this.form.patchValue({
-                title: t.title,
-                description: t.description,
-                dueDate: t.dueDate,
-                completed: t.completed,
-              });
+        this.taskService.get(this.taskId).subscribe({
+          next: (task) => {
+            let dueDate = task.dueDate;
+            if (dueDate && dueDate.includes('T')) {
+              dueDate = dueDate.split('T')[0];
             }
-          });
+
+            this.form.patchValue({
+              title: task.title,
+              description: task.description,
+              dueDate: dueDate,
+              completed: task.completed,
+            });
+          },
+          error: (err) => console.error('Erreur lors du chargement', err),
+        });
       }
     });
   }
@@ -63,16 +65,25 @@ export class TaskFormComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const data = this.form.value as unknown as Task;
+
+    const data: Task = {
+      title: this.form.value.title,
+      description: this.form.value.description || '',
+      dueDate: this.form.value.dueDate,
+      completed: !!this.form.value.completed,
+    };
+
     if (this.taskId) {
       data.id = this.taskId;
-      this.taskService
-        .update(data)
-        .subscribe(() => this.router.navigate(['/tasks']));
+      this.taskService.update(data).subscribe({
+        next: () => this.router.navigate(['/tasks']),
+        error: (err) => console.error('Erreur lors de la mise à jour', err),
+      });
     } else {
-      this.taskService
-        .create(data)
-        .subscribe(() => this.router.navigate(['/tasks']));
+      this.taskService.create(data).subscribe({
+        next: () => this.router.navigate(['/tasks']),
+        error: (err) => console.error('Erreur lors de la création', err),
+      });
     }
   }
 }

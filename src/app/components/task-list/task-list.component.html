@@ -24,5 +24,7 @@
     <span [class.done]="task.completed">
       {{ task.completed ? "✓" : "✗" }}
     </span>
+    <a [routerLink]="['/tasks', task.id, 'edit']" class="btn-edit">Modifier</a>
+    <button (click)="deleteTask(task.id)">Supprimer</button>
   </li>
 </ul>
