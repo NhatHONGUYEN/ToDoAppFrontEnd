@@ -1,5 +1,14 @@
 <h1>Mes tâches</h1>
 
+<div class="add-task">
+  <input
+    type="text"
+    [(ngModel)]="newTaskTitle"
+    placeholder="Nouvelle tâche..."
+  />
+  <button (click)="addTask()">Ajouter</button>
+</div>
+
 <nav>
   <button (click)="load('all')">Toutes</button>
   <button (click)="load('pending')">En cours</button>
