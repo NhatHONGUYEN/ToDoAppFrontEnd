@@ -1,3 +1,80 @@
+.task-list-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+mat-list {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-item {
+  height: auto !important;
+  margin-bottom: 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  ::ng-deep .mdc-list-item__content {
+    width: 100%;
+  }
+}
+
+.task-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-info {
+  display: flex;
+  gap: 10px;
+  margin: 25px 0;
+  width: 15vw;
+  justify-content: space-between;
+  align-items: center;
+
+  .task-title-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.task-title {
+  font-weight: 500;
+
+  &.completed {
+    text-decoration: line-through;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.task-date {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-chips {
+  margin-bottom: 24px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
 .done {
   color: green;
 }

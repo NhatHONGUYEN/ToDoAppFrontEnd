@@ -1,30 +1,68 @@
-<h1>Mes tâches</h1>
+<div class="task-list-container">
+  <h1>Mes tâches</h1>
 
-<div class="add-task">
-  <input
-    type="text"
-    [(ngModel)]="newTaskTitle"
-    placeholder="Nouvelle tâche..."
-  />
-  <button (click)="addTask()">Ajouter</button>
+  <mat-form-field class="full-width">
+    <mat-label>Nouvelle tâche</mat-label>
+    <input
+      matInput
+      [(ngModel)]="newTaskTitle"
+      name="newTaskTitle"
+      placeholder="Entrez une tâche..."
+    />
+    <button mat-icon-button matSuffix color="primary" (click)="addTask()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-chip-set aria-label="TodoStatus selection">
+    <mat-chip-option (click)="load('all')" [selected]="currentStatus === 'all'"
+      >Toutes</mat-chip-option
+    >
+    <mat-chip-option
+      (click)="load('pending')"
+      [selected]="currentStatus === 'pending'"
+      >En cours</mat-chip-option
+    >
+    <mat-chip-option
+      (click)="load('done')"
+      [selected]="currentStatus === 'done'"
+      >Terminées</mat-chip-option
+    >
+  </mat-chip-set>
+
+  <div *ngIf="loading"><mat-spinner></mat-spinner></div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <mat-list>
+    <mat-list-item *ngFor="let task of tasks" class="task-item">
+      <div class="task-content">
+        <div class="task-info">
+          <div class="task-title-container">
+            <span class="task-title" [class.completed]="task.completed">{{
+              task.title
+            }}</span>
+            <span class="task-date">{{ task.dueDate | date }}</span>
+          </div>
+          <mat-icon
+            [color]="task.completed ? 'primary' : 'default'"
+            class="status-icon"
+          >
+            {{ task.completed ? "check_circle" : "more_horiz" }}
+          </mat-icon>
+        </div>
+
+        <div class="task-actions">
+          <button
+            mat-icon-button
+            [routerLink]="['/tasks', task.id, 'edit']"
+            color="primary"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteTask(task.id)" color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-list-item>
+  </mat-list>
 </div>
-
-<nav>
-  <button (click)="load('all')">Toutes</button>
-  <button (click)="load('pending')">En cours</button>
-  <button (click)="load('done')">Terminées</button>
-</nav>
-
-<div *ngIf="loading">Chargement…</div>
-<div *ngIf="error" class="error">{{ error }}</div>
-
-<ul>
-  <li *ngFor="let task of tasks">
-    {{ task.title }} — {{ task.dueDate | date }} —
-    <span [class.done]="task.completed">
-      {{ task.completed ? "✓" : "✗" }}
-    </span>
-    <a [routerLink]="['/tasks', task.id, 'edit']" class="btn-edit">Modifier</a>
-    <button (click)="deleteTask(task.id)">Supprimer</button>
-  </li>
-</ul>
