@@ -1,35 +1,64 @@
-<h2>{{ taskId ? "Modifier" : "Nouvelle" }} tâche</h2>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="title">Titre</label>
-    <input id="title" formControlName="title" />
-    <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
-      Le titre est requis.
+<div class="task-form-container">
+  <h1>{{ taskId ? "Modifier" : "Nouvelle" }} tâche</h1>
+  <form class="task-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Titre</mat-label>
+      <input id="title" formControlName="title" type="text" matInput />
+      <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+        Le titre est requis.
+      </div>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input
+        id="description"
+        formControlName="description"
+        type="text"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date d'échéance</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="dueDate"
+        placeholder="JJ/MM/AAAA"
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error
+        *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched"
+      >
+        La date d'échéance est requise
+      </mat-error>
+    </mat-form-field>
+
+    <div>
+      <mat-checkbox
+        type="checkbox"
+        formControlName="completed"
+        class="example-margin"
+      >
+        Terminée</mat-checkbox
+      >
     </div>
-  </div>
 
-  <div>
-    <label for="description">Description</label>
-    <textarea id="description" formControlName="description"></textarea>
-  </div>
-
-  <div>
-    <label for="dueDate">Échéance</label>
-    <input id="dueDate" type="date" formControlName="dueDate" />
-    <div *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched">
-      La date d’échéance est requise.
-    </div>
-  </div>
-
-  <div>
-    <label>
-      <input type="checkbox" formControlName="completed" />
-      Terminée
-    </label>
-  </div>
-
-  <button type="submit" [disabled]="form.invalid">
-    {{ taskId ? "Mettre à jour" : "Créer" }}
-  </button>
-  <button type="button" (click)="router.navigate(['/tasks'])">Annuler</button>
-</form>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      {{ taskId ? "Mettre à jour" : "Créer" }}
+    </button>
+    <button mat-flat-button type="button" (click)="router.navigate(['/tasks'])">
+      Annuler
+    </button>
+  </form>
+</div>

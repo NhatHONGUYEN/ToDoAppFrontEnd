@@ -1,23 +1,42 @@
+// Variables
+$primary-color: #1976d2;
+$hover-bg: rgba(0, 0, 0, 0.04);
+$text-secondary: rgba(0, 0, 0, 0.6);
+$completed-color: rgba(0, 0, 0, 0.5);
+$green: #4caf50;
+$red: #f44336;
+$spacing-unit: 8px;
+
+// Container
 .task-list-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: $spacing-unit * 2.5;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: $primary-color;
+  }
 }
 
+// List
 mat-list {
-  padding: 20px 0;
+  padding: $spacing-unit * 2.5 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: $spacing-unit * 1.25;
 }
 
+// List items
 .task-item {
   height: auto !important;
-  margin-bottom: 8px;
+  margin-bottom: $spacing-unit;
   border-radius: 4px;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: $hover-bg;
   }
 
   ::ng-deep .mdc-list-item__content {
@@ -25,6 +44,7 @@ mat-list {
   }
 }
 
+// Content layout
 .task-content {
   display: flex;
   width: 100%;
@@ -32,11 +52,12 @@ mat-list {
   align-items: center;
 }
 
+// Task info section
 .task-info {
   display: flex;
-  gap: 10px;
-  margin: 25px 0;
   width: 15vw;
+  gap: $spacing-unit * 1.25;
+  margin: $spacing-unit * 3 0;
   justify-content: space-between;
   align-items: center;
 
@@ -46,41 +67,49 @@ mat-list {
   }
 }
 
+// Title styles
 .task-title {
   font-weight: 500;
 
   &.completed {
     text-decoration: line-through;
-    color: rgba(0, 0, 0, 0.5);
+    color: $completed-color;
   }
 }
 
+// Date styles
 .task-date {
-  color: rgba(0, 0, 0, 0.6);
+  color: $text-secondary;
   font-size: 0.85rem;
-  margin-top: 4px;
+  margin-top: $spacing-unit / 2;
 }
 
+// Action buttons
 .task-actions {
   display: flex;
-  gap: 8px;
+  gap: $spacing-unit;
 }
 
+// Filter chips
 .filter-chips {
-  margin-bottom: 24px;
+  margin-bottom: $spacing-unit * 3;
 }
 
+// Form field
 .full-width {
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: $spacing-unit * 3;
 }
 
+// Status indicators
 .done {
-  color: green;
+  color: $green;
 }
 .error {
-  color: red;
+  color: $red;
 }
+
+// Navigation
 nav button {
-  margin-right: 0.5rem;
+  margin-right: $spacing-unit / 2;
 }
