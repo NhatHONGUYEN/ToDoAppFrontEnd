@@ -4,10 +4,12 @@ $primary-color: #1976d2;
   display: flex;
   flex-direction: column;
   width: 600px;
-  margin: 0 auto;
+  margin: 10vh auto;
   gap: 10px;
 
   h1 {
+    display: flex;
+    justify-content: center;
     font-size: 2.5rem;
     font-weight: 500;
     color: $primary-color;

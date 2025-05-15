@@ -15,6 +15,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-task-form',
@@ -40,7 +41,8 @@ export class TaskFormComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     public router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -69,7 +71,12 @@ export class TaskFormComponent implements OnInit {
               completed: task.completed,
             });
           },
-          error: (err) => console.error('Erreur lors du chargement', err),
+          error: (err) => {
+            console.error('Erreur lors du chargement', err);
+            this.notificationService.showError(
+              'Erreur lors du chargement de la tâche'
+            );
+          },
         });
       }
     });
@@ -78,6 +85,9 @@ export class TaskFormComponent implements OnInit {
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.notificationService.showError(
+        'Veuillez corriger les erreurs du formulaire'
+      );
       return;
     }
 
@@ -91,13 +101,29 @@ export class TaskFormComponent implements OnInit {
     if (this.taskId) {
       data.id = this.taskId;
       this.taskService.update(data).subscribe({
-        next: () => this.router.navigate(['/tasks']),
-        error: (err) => console.error('Erreur lors de la mise à jour', err),
+        next: () => {
+          this.router.navigate(['/tasks']);
+          this.notificationService.showSuccess('Tâche mise à jour avec succès');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour', err);
+          this.notificationService.showError(
+            'Erreur lors de la mise à jour de la tâche'
+          );
+        },
       });
     } else {
       this.taskService.create(data).subscribe({
-        next: () => this.router.navigate(['/tasks']),
-        error: (err) => console.error('Erreur lors de la création', err),
+        next: () => {
+          this.router.navigate(['/tasks']);
+          this.notificationService.showSuccess('Tâche créée avec succès');
+        },
+        error: (err) => {
+          console.error('Erreur lors de la création', err);
+          this.notificationService.showError(
+            'Erreur lors de la création de la tâche'
+          );
+        },
       });
     }
   }

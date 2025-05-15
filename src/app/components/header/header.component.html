@@ -1,0 +1,19 @@
+<div class="header">
+  <mat-icon routerLink="/" style="cursor: pointer">
+    <img src="/double-check.svg" alt="logo"
+  /></mat-icon>
+
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    aria-label="Example icon-button with a menu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu xPosition="before" #menu="matMenu">
+    <button mat-menu-item routerLink="/">home <mat-icon>home</mat-icon></button>
+    <button mat-menu-item (click)="logout()">
+      Déconnexion <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </mat-menu>
+</div>
