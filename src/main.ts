@@ -18,6 +18,7 @@ import { AppAuthGuard } from './app/app-auth.guard';
 import { environment } from './environments/environment';
 import { TaskListComponent } from './app/components/task-list/task-list.component';
 import { TaskFormComponent } from './app/components/task-form/task-form.component';
+import { TaskDetailsComponent } from './app/components/task-details/task-details.component';
 
 if (environment.production) {
   enableProdMode();
@@ -44,6 +45,11 @@ bootstrapApplication(AppComponent, {
       {
         path: 'tasks/new',
         component: TaskFormComponent,
+        canActivate: [AppAuthGuard],
+      },
+      {
+        path: 'tasks/:id',
+        component: TaskDetailsComponent,
         canActivate: [AppAuthGuard],
       },
       {
