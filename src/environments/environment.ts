@@ -3,7 +3,7 @@ export const environment = {
   production: false,
   keycloak: {
     issuer: 'http://localhost:8082/realms/master',
-    clientId: 'ToDoApp-realm',
+    clientId: 'todoapp-client',
     redirectUri: window.location.origin,
   },
 };
