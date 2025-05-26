@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -11,8 +11,14 @@ import { KeycloakService } from 'keycloak-angular';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  isAdmin: boolean = false;
+
   constructor(private keycloak: KeycloakService) {}
+
+  async ngOnInit() {
+    this.isAdmin = await this.keycloak.isUserInRole('ADMIN');
+  }
 
   logout(): Promise<void> {
     return this.keycloak.logout(window.location.origin);
