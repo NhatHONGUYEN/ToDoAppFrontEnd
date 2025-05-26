@@ -3,8 +3,8 @@ export const environment = {
   apiUrl: 'https://todoappbackend-production-3438.up.railway.app/api/tasks',
   keycloak: {
     issuer:
-      'https://todoappkeycloak-production.up.railway.app/realms/todo-realm',
-    clientId: 'todo-frontend-client',
+      'https://todoappkeycloak-production.up.railway.app/realms/todo-backend',
+    clientId: 'todo-backend-client',
     redirectUri: window.location.origin,
   },
 };
