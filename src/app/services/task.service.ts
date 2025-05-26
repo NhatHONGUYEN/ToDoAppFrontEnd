@@ -7,7 +7,8 @@ import { Task } from '../models/task.model';
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl = 'https://todoappbackend-y2ca.onrender.com/api/tasks';
+  private apiUrl =
+    'https://todoappbackend-production-3438.up.railway.app/api/tasks';
 
   constructor(private http: HttpClient) {}
 
