@@ -16,6 +16,12 @@ export const routes: Routes = [
     canActivate: [AppAuthGuard],
   },
   {
+    path: 'tasks/new',
+    component: TaskFormComponent,
+    canActivate: [AppAuthGuard],
+    data: { roles: ['USER', 'ADMIN'] },
+  },
+  {
     path: 'tasks/:id/edit',
     component: TaskFormComponent,
     canActivate: [AppAuthGuard],
@@ -26,14 +32,7 @@ export const routes: Routes = [
     component: TaskDetailsComponent,
     canActivate: [AppAuthGuard],
   },
-  {
-    path: 'admin',
-    loadChildren: () =>
-      import('./components/admin/admin.module') // ← no “.ts”, just the file name
-        .then((m) => m.AdminModule), // ← must match the exported class name
-    canActivate: [AppAuthGuard],
-    data: { roles: ['ADMIN'] },
-  },
+
   {
     path: '**',
     redirectTo: '',

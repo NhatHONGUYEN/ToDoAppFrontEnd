@@ -1,4 +1,3 @@
-// Cette importation est dépréciée, mais sûre à utiliser pour le moment
 import { KeycloakService } from 'keycloak-angular';
 import { environment } from '../environments/environment';
 
@@ -6,7 +5,6 @@ export function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        // on découpe l'issuer pour récupérer baseUrl + realm
         url: environment.keycloak.issuer.replace(/\/realms\/.*$/, ''),
         realm: environment.keycloak.issuer.split('/').pop()!,
         clientId: environment.keycloak.clientId,
@@ -15,13 +13,15 @@ export function initializeKeycloak(keycloak: KeycloakService) {
         onLoad: 'login-required',
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html',
+        checkLoginIframe: false,
+        pkceMethod: 'S256',
       },
       enableBearerInterceptor: true,
       bearerPrefix: 'Bearer',
       bearerExcludedUrls: [
-        // Exclure tout ce qui est assets ou routes publiques
         '/assets',
         '/favicon.ico',
+        // Add other URLs to EXCLUDE from bearer token here
       ],
     });
 }

@@ -15,29 +15,37 @@ export class AppAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    // Vérifier l'authentification
-    const isAuth = await this.keycloak.isLoggedIn();
-    if (!isAuth) {
-      await this.keycloak.login({
-        redirectUri: window.location.origin + state.url,
-      });
-      return false;
-    }
+    try {
+      // Vérifier l'authentification
+      const isAuth = await this.keycloak.isLoggedIn();
 
-    // Vérifier les rôles si spécifiés
-    const requiredRoles = route.data['roles'] as string[];
-    if (requiredRoles && requiredRoles.length > 0) {
-      const hasRole = requiredRoles.some((role) =>
-        this.keycloak.isUserInRole(role)
-      );
-
-      if (!hasRole) {
-        // Rediriger vers une page d'accès refusé ou page d'accueil
-        this.router.navigate(['/']);
+      if (!isAuth) {
+        await this.keycloak.login({
+          redirectUri: window.location.origin + state.url,
+        });
         return false;
       }
-    }
 
-    return true;
+      // Vérifier les rôles si spécifiés
+      const requiredRoles = route.data?.['roles'] as string[];
+
+      if (requiredRoles && requiredRoles.length > 0) {
+        const hasRole = requiredRoles.some((role) => {
+          const hasThisRole = this.keycloak.isUserInRole(role);
+
+          return hasThisRole;
+        });
+
+        if (!hasRole) {
+          this.router.navigate(['/access-denied']); // Créer cette page
+          return false;
+        }
+      }
+
+      return true;
+    } catch (error) {
+      this.router.navigate(['/']);
+      return false;
+    }
   }
 }

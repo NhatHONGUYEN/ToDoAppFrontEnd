@@ -13,7 +13,7 @@ import { provideRouter } from '@angular/router';
 
 import { AppComponent } from './app/app.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { initializeKeycloak } from './app/app-init';
+import { initializeKeycloak } from './app/keycloak-init';
 import { AppAuthGuard } from './app/app-auth.guard';
 import { environment } from './environments/environment';
 import { TaskListComponent } from './app/components/task-list/task-list.component';
