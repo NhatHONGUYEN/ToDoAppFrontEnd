@@ -17,9 +17,13 @@
     <button mat-menu-item routerLink="/admin" *ngIf="isAdmin">
       Administration <mat-icon>admin_panel_settings</mat-icon>
     </button>
-    <button mat-menu-item routerLink="/docs">
+    <a
+      mat-menu-item
+      href="https://todoappbackend-production-3438.up.railway.app/swagger-ui.html"
+      target="_blank"
+    >
       Documentation API <mat-icon>description</mat-icon>
-    </button>
+    </a>
     <button mat-menu-item (click)="logout()">
       Déconnexion <mat-icon>exit_to_app</mat-icon>
     </button>
