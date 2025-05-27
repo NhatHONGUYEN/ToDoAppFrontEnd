@@ -7,7 +7,7 @@
     "build": "npm run generate-docs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-docs": "npx @redocly/cli build-docs https://todoappbackend-production-3438.up.railway.app/v3/api-docs -o src/assets/api-docs/index.html"
+    "generate-docs": "npx @redocly/cli build-docs https://todoappbackend-production-3438.up.railway.app/v3/api-docs -o src/assets/api-docs/index.html && node scripts/update-api-docs.js"
   },
   "private": true,
   "dependencies": {
