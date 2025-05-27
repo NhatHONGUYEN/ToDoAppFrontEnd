@@ -32,7 +32,6 @@ export const routes: Routes = [
     component: TaskDetailsComponent,
     canActivate: [AppAuthGuard],
   },
-
   {
     path: '**',
     redirectTo: '',
