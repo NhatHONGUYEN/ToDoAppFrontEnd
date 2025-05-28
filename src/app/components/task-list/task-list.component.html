@@ -10,6 +10,7 @@
       [(ngModel)]="newTaskTitle"
       name="newTaskTitle"
       placeholder="Entrez une tâche..."
+      (keyup.enter)="addTask()"
     />
     <button mat-icon-button matSuffix color="primary" (click)="addTask()">
       <mat-icon>add</mat-icon>
