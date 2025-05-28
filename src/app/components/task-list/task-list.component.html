@@ -11,183 +11,113 @@
         placeholder="Entrez une tâche..."
         (keyup.enter)="addTask()"
       />
-      <button mat-icon-button matSuffix color="primary" (click)="addTask()">
+      <button
+        mat-icon-button
+        matSuffix
+        color="primary"
+        style="margin-right: 10px"
+        (click)="addTask()"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </mat-form-field>
   </div>
 
-  <!-- Colonne 2: Toutes les tâches -->
-  <div class="task-column">
-    <h2>Toutes</h2>
-    <!-- Message si aucune tâche -->
-    <div
-      *ngIf="filteredTasks.all.length === 0 && !loading"
-      class="empty-tasks-message"
-    >
-      <mat-icon>info</mat-icon>
-      <p>Aucune tâche disponible</p>
-    </div>
-    <!-- Liste des tâches -->
-    <div class="task-scroll-container">
-      <mat-list *ngIf="filteredTasks.all.length > 0">
-        <mat-list-item *ngFor="let task of filteredTasks.all" class="task-item">
-          <div class="task-content">
-            <!-- Informations de la tâche -->
-            <div class="task-info">
-              <div class="task-title-container">
-                <span class="task-title" [class.completed]="task.completed">{{
-                  task.title
-                }}</span>
-                <span class="task-date">{{ task.dueDate | date }}</span>
+  <!-- Template réutilisable pour les colonnes de tâches -->
+  <ng-template
+    #taskColumn
+    let-tasks="tasks"
+    let-title="title"
+    let-emptyMessage="emptyMessage"
+  >
+    <div class="task-column">
+      <h2>{{ title }}</h2>
+      <!-- Message si aucune tâche -->
+      <div *ngIf="tasks.length === 0 && !loading" class="empty-tasks-message">
+        <mat-icon>info</mat-icon>
+        <p>{{ emptyMessage }}</p>
+      </div>
+      <!-- Liste des tâches -->
+      <div class="task-scroll-container">
+        <mat-list *ngIf="tasks.length > 0">
+          <mat-list-item *ngFor="let task of tasks" class="task-item">
+            <div class="task-content">
+              <!-- Informations de la tâche -->
+              <div class="task-info">
+                <div class="task-title-container">
+                  <span class="task-title" [class.completed]="task.completed">{{
+                    task.title
+                  }}</span>
+                  <span class="task-date">{{ task.dueDate | date }}</span>
+                </div>
+              </div>
+
+              <!-- Actions sur la tâche -->
+              <div class="task-actions">
+                <button
+                  mat-icon-button
+                  (click)="openTaskDetails(task.id)"
+                  color="primary"
+                >
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  [routerLink]="['/tasks', task.id, 'edit']"
+                  color="primary"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="deleteTask(task.id)"
+                  color="warn"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
             </div>
-
-            <!-- Actions sur la tâche -->
-            <div class="task-actions">
-              <button
-                mat-icon-button
-                (click)="openTaskDetails(task.id)"
-                color="primary"
-              >
-                <mat-icon>visibility</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                [routerLink]="['/tasks', task.id, 'edit']"
-                color="primary"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="deleteTask(task.id)"
-                color="warn"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-list-item>
-      </mat-list>
+          </mat-list-item>
+        </mat-list>
+      </div>
     </div>
-  </div>
+  </ng-template>
+
+  <!-- Colonne 2: Toutes les tâches -->
+  <ng-container
+    *ngTemplateOutlet="
+      taskColumn;
+      context: {
+        tasks: filteredTasks.all,
+        title: 'Toutes',
+        emptyMessage: 'Aucune tâche disponible'
+      }
+    "
+  ></ng-container>
 
   <!-- Colonne 3: Tâches en cours -->
-  <div class="task-column">
-    <h2>En cours</h2>
-    <!-- Message si aucune tâche -->
-    <div
-      *ngIf="filteredTasks.pending.length === 0 && !loading"
-      class="empty-tasks-message"
-    >
-      <mat-icon>info</mat-icon>
-      <p>Aucune tâche en cours</p>
-    </div>
-    <!-- Liste des tâches -->
-    <div class="task-scroll-container">
-      <mat-list *ngIf="filteredTasks.pending.length > 0">
-        <mat-list-item
-          *ngFor="let task of filteredTasks.pending"
-          class="task-item"
-        >
-          <div class="task-content">
-            <!-- Informations de la tâche -->
-            <div class="task-info">
-              <div class="task-title-container">
-                <span class="task-title">{{ task.title }}</span>
-                <span class="task-date"
-                  >Avant le {{ task.dueDate | date }}</span
-                >
-              </div>
-            </div>
-
-            <!-- Actions sur la tâche -->
-            <div class="task-actions">
-              <button
-                mat-icon-button
-                (click)="openTaskDetails(task.id)"
-                color="primary"
-              >
-                <mat-icon>visibility</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                [routerLink]="['/tasks', task.id, 'edit']"
-                color="primary"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="deleteTask(task.id)"
-                color="warn"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </div>
+  <ng-container
+    *ngTemplateOutlet="
+      taskColumn;
+      context: {
+        tasks: filteredTasks.pending,
+        title: 'En cours',
+        emptyMessage: 'Aucune tâche en cours'
+      }
+    "
+  ></ng-container>
 
   <!-- Colonne 4: Tâches terminées -->
-  <div class="task-column">
-    <h2>Terminées</h2>
-    <!-- Message si aucune tâche -->
-    <div
-      *ngIf="filteredTasks.done.length === 0 && !loading"
-      class="empty-tasks-message"
-    >
-      <mat-icon>info</mat-icon>
-      <p>Aucune tâche terminée</p>
-    </div>
-    <!-- Liste des tâches -->
-    <div class="task-scroll-container">
-      <mat-list *ngIf="filteredTasks.done.length > 0">
-        <mat-list-item
-          *ngFor="let task of filteredTasks.done"
-          class="task-item"
-        >
-          <div class="task-content">
-            <!-- Informations de la tâche -->
-            <div class="task-info">
-              <div class="task-title-container">
-                <span class="task-title completed">{{ task.title }}</span>
-                <span class="task-date">{{ task.dueDate | date }}</span>
-              </div>
-            </div>
-
-            <!-- Actions sur la tâche -->
-            <div class="task-actions">
-              <button
-                mat-icon-button
-                (click)="openTaskDetails(task.id)"
-                color="primary"
-              >
-                <mat-icon>visibility</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                [routerLink]="['/tasks', task.id, 'edit']"
-                color="primary"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="deleteTask(task.id)"
-                color="warn"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </div>
+  <ng-container
+    *ngTemplateOutlet="
+      taskColumn;
+      context: {
+        tasks: filteredTasks.done,
+        title: 'Terminées',
+        emptyMessage: 'Aucune tâche terminée'
+      }
+    "
+  ></ng-container>
 
   <!-- Section loading et erreur -->
   <div *ngIf="showLoading || error" class="status-container">

@@ -36,6 +36,7 @@ import { NotificationService } from '../../services/notification.service';
 export class TaskFormComponent implements OnInit {
   form!: FormGroup;
   public taskId?: number;
+  minDate: Date = new Date(); // Date minimum = aujourd'hui
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +44,10 @@ export class TaskFormComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     private notificationService: NotificationService
-  ) {}
+  ) {
+    // Réinitialiser les heures, minutes et secondes pour que minDate soit à minuit
+    this.minDate.setHours(0, 0, 0, 0);
+  }
 
   ngOnInit() {
     this.form = this.fb.group({

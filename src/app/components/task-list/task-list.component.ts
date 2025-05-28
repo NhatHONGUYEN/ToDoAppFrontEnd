@@ -20,7 +20,6 @@ import {
   MatPaginatorIntl,
 } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { delay } from 'rxjs/operators';
 import { FrenchPaginatorIntl } from '../../shared/french-paginator-intl';
 import { TaskDetailsComponent } from '../task-details/task-details.component';
 
@@ -140,7 +139,7 @@ export class TaskListComponent implements OnInit {
         dueDate: new Date().toISOString(),
       })
       .subscribe({
-        next: (newTask) => {
+        next: (_newTask) => {
           this.newTaskTitle = '';
           this.loading = false;
           this.notificationService.showSuccess('Tâche créée avec succès');

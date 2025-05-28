@@ -34,6 +34,7 @@
         formControlName="dueDate"
         placeholder="JJ/MM/AAAA"
         (keyup.enter)="onSubmit()"
+        [min]="minDate"
       />
       <mat-datepicker-toggle
         matIconSuffix
