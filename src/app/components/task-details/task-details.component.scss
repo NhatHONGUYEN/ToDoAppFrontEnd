@@ -13,6 +13,7 @@ h2[mat-dialog-title] {
   color: $primary-color;
   text-align: center;
   margin-bottom: 16px;
+  font-weight: bold;
 }
 
 mat-dialog-content {
@@ -22,8 +23,6 @@ mat-dialog-content {
 
 .task-details {
   h3 {
-    font-size: 18px;
-    color: $primary-color;
     margin-bottom: 4px;
   }
 
@@ -64,6 +63,7 @@ mat-dialog-content {
 mat-dialog-actions {
   padding: 8px 0;
   margin-bottom: 0;
+  margin-right: 10px;
 }
 
 button {

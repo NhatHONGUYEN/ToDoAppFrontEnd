@@ -2,6 +2,7 @@ import {
   APP_INITIALIZER,
   enableProdMode,
   importProvidersFrom,
+  LOCALE_ID,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -10,6 +11,11 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+// Enregistrer le locale français
+registerLocaleData(localeFr);
 
 import { AppComponent } from './app/app.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
@@ -29,6 +35,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(ReactiveFormsModule, FormsModule),
     provideHttpClient(withInterceptorsFromDi()),
     importProvidersFrom(KeycloakAngularModule),
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

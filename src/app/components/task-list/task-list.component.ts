@@ -177,7 +177,7 @@ export class TaskListComponent implements OnInit {
     if (taskId === undefined) return;
 
     this.dialog.open(TaskDetailsComponent, {
-      width: '500px',
+      width: '1000px',
       data: { taskId: taskId },
     });
   }

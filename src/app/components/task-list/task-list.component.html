@@ -1,7 +1,7 @@
 <div class="task-columns-container">
   <!-- Colonne 1: Tri et ajout de tâches -->
   <div class="task-column">
-    <h1>Mes tâches</h1>
+    <h1>Tâches à faire</h1>
     <mat-form-field class="full-width">
       <mat-label>Nouvelle tâche</mat-label>
       <input
@@ -48,7 +48,9 @@
                   <span class="task-title" [class.completed]="task.completed">{{
                     task.title
                   }}</span>
-                  <span class="task-date">{{ task.dueDate | date }}</span>
+                  <span class="task-date">{{
+                    task.dueDate | date : "EEEE d MMMM y"
+                  }}</span>
                 </div>
               </div>
 
