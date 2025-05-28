@@ -10,24 +10,25 @@ $spacing-unit: 8px;
 // Colonnes container
 .task-columns-container {
   display: flex;
-  width: 100%;
+  width: 95%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px 20px;
   gap: 20px;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 140px);
   overflow: hidden;
 }
 
 // Colonne
 .task-column {
   flex: 1;
-  min-width: 300px;
+  min-width: 280px;
   background-color: #f5f5f5;
   border-radius: 8px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 100%;
 
   h1,
   h2 {
@@ -52,6 +53,7 @@ $spacing-unit: 8px;
   overflow-y: auto;
   margin-top: 8px;
   padding-right: 4px;
+  max-height: calc(100% - 80px);
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -178,7 +180,7 @@ mat-list {
 // Empty tasks message
 .empty-tasks-message {
   text-align: center;
-  padding: 40px 0;
+  padding: 30px 0;
   color: rgba(0, 0, 0, 0.54);
   display: flex;
   flex-direction: column;
@@ -204,6 +206,7 @@ mat-list {
     flex-wrap: wrap;
     height: auto;
     overflow: visible;
+    padding: 20px;
   }
 
   .task-column {

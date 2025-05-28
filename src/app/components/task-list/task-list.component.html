@@ -41,12 +41,6 @@
                 }}</span>
                 <span class="task-date">{{ task.dueDate | date }}</span>
               </div>
-              <mat-icon
-                [color]="task.completed ? 'primary' : 'default'"
-                class="status-icon"
-              >
-                {{ task.completed ? "check_circle" : "more_horiz" }}
-              </mat-icon>
             </div>
 
             <!-- Actions sur la tâche -->
@@ -102,9 +96,10 @@
             <div class="task-info">
               <div class="task-title-container">
                 <span class="task-title">{{ task.title }}</span>
-                <span class="task-date">{{ task.dueDate | date }}</span>
+                <span class="task-date"
+                  >Avant le {{ task.dueDate | date }}</span
+                >
               </div>
-              <mat-icon class="status-icon">more_horiz</mat-icon>
             </div>
 
             <!-- Actions sur la tâche -->
@@ -162,9 +157,6 @@
                 <span class="task-title completed">{{ task.title }}</span>
                 <span class="task-date">{{ task.dueDate | date }}</span>
               </div>
-              <mat-icon color="primary" class="status-icon"
-                >check_circle</mat-icon
-              >
             </div>
 
             <!-- Actions sur la tâche -->
