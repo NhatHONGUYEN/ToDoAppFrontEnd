@@ -3,6 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task.model';
 
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number; // Numéro de page actuelle
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,9 +29,15 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  /** Récupère la liste des tâches, filtrée par status (all|pending|done) */
-  list(status: string = 'all'): Observable<Task[]> {
-    return this.http.get<Task[]>(`${this.readUrl}?status=${status}`);
+  /** Récupère la liste des tâches, filtrée par status (all|pending|done) avec pagination */
+  list(
+    status: string = 'all',
+    page: number = 0,
+    size: number = 10
+  ): Observable<PageResponse<Task>> {
+    return this.http.get<PageResponse<Task>>(
+      `${this.readUrl}?status=${status}&page=${page}&size=${size}`
+    );
   }
 
   /** Récupère une tâche par son ID */

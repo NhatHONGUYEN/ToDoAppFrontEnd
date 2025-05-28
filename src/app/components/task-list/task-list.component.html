@@ -45,7 +45,7 @@
   </div>
 
   <!-- Message si aucune tâche -->
-  <div *ngIf="tasks.length === 0" class="empty-tasks-message">
+  <div *ngIf="tasks.length === 0 && !loading" class="empty-tasks-message">
     <mat-icon>info</mat-icon>
     <p>Aucune tâche disponible</p>
   </div>
@@ -93,4 +93,17 @@
       </div>
     </mat-list-item>
   </mat-list>
+
+  <!-- Pagination -->
+  <mat-paginator
+    *ngIf="totalItems > 0"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="handlePageEvent($event)"
+    aria-label="Sélectionner une page"
+    class="mat-elevation-z2"
+  >
+  </mat-paginator>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TaskService } from '../../services/task.service';
+import { TaskService, PageResponse } from '../../services/task.service';
 import { NotificationService } from '../../services/notification.service';
 import { Task } from '../../models/task.model';
 import { RouterLink } from '@angular/router';
@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { delay } from 'rxjs/operators';
 
 @Component({
@@ -32,6 +33,7 @@ import { delay } from 'rxjs/operators';
     MatListModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    MatPaginatorModule,
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
@@ -44,26 +46,42 @@ export class TaskListComponent implements OnInit {
   newTaskTitle = '';
   currentStatus: 'all' | 'pending' | 'done' = 'all';
 
+  // Pagination
+  totalItems = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25, 50];
+
   constructor(
     private taskService: TaskService,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.load('all');
+    this.load();
   }
 
-  load(status: 'all' | 'pending' | 'done') {
-    this.currentStatus = status;
+  load(
+    status?: 'all' | 'pending' | 'done',
+    page: number = 0,
+    size: number = this.pageSize
+  ) {
+    if (status) {
+      this.currentStatus = status;
+    }
+
     this.loading = true;
     setTimeout(() => {
       if (this.loading) this.showLoading = true;
     }, 500);
 
     this.error = null;
-    this.taskService.list(status).subscribe({
-      next: (tasks) => {
-        this.tasks = tasks;
+    this.taskService.list(this.currentStatus, page, size).subscribe({
+      next: (response) => {
+        this.tasks = response.content;
+        this.totalItems = response.totalElements;
+        this.pageIndex = response.number;
+        this.pageSize = response.size;
         this.loading = false;
         this.showLoading = false;
       },
@@ -90,10 +108,11 @@ export class TaskListComponent implements OnInit {
       })
       .subscribe({
         next: (newTask) => {
-          this.tasks.unshift(newTask);
           this.newTaskTitle = '';
           this.loading = false;
-          this.notificationService.showSuccess('Tâche crée avec succès');
+          this.notificationService.showSuccess('Tâche créée avec succès');
+          // Recharger les tâches pour mettre à jour la pagination
+          this.load();
         },
         error: (err) => {
           this.error = err.message || 'Erreur lors de la création de la tâche';
@@ -110,13 +129,21 @@ export class TaskListComponent implements OnInit {
 
     this.taskService.delete(id).subscribe({
       next: () => {
-        this.tasks = this.tasks.filter((task) => task.id !== id);
         this.notificationService.showSuccess('Tâche supprimée avec succès');
+        // Recharger les tâches pour mettre à jour la pagination
+        this.load();
       },
       error: (err) => {
         this.error = err.message || 'Erreur lors de la suppression de la tâche';
         this.notificationService.showError('Erreur lors de la suppression');
       },
     });
+  }
+
+  // Gestion des événements de pagination
+  handlePageEvent(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.load(undefined, this.pageIndex, this.pageSize);
   }
 }
