@@ -6,5 +6,6 @@ export const environment = {
       'https://todoappkeycloak-production.up.railway.app/realms/todo-backend',
     clientId: 'todo-backend-client',
     redirectUri: 'https://todoappnhat.netlify.app',
+    clientSecret: '48X6oHEI8EFSaCVYVBYy3FtAWnYswMnE',
   },
 };
