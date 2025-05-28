@@ -1,9 +1,10 @@
 export const environment = {
   production: true,
-  apiUrl: '${API_URL}',
+  apiUrl: 'https://todoappbackend-production-3438.up.railway.app/api/tasks',
   keycloak: {
-    issuer: '${KEYCLOAK_ISSUER_URI}',
-    clientId: '${KEYCLOAK_CLIENT_ID}',
-    redirectUri: '${FRONTEND_URL}',
+    issuer:
+      'https://todoappkeycloak-production.up.railway.app/realms/todo-backend',
+    clientId: 'todo-backend-client',
+    redirectUri: 'https://todoappnhat.netlify.app',
   },
 };
