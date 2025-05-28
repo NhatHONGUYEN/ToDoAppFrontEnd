@@ -3,6 +3,8 @@
     <img src="/double-check.svg" alt="logo"
   /></mat-icon>
 
+  <div class="welcome-message" *ngIf="username">Bienvenue {{ username }}</div>
+
   <button
     mat-icon-button
     [matMenuTriggerFor]="menu"

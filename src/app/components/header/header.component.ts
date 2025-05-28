@@ -20,11 +20,22 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class HeaderComponent implements OnInit {
   isAdmin: boolean = false;
+  username: string = '';
 
   constructor(private keycloak: KeycloakService) {}
 
   async ngOnInit() {
     this.isAdmin = await this.keycloak.isUserInRole('ADMIN');
+
+    try {
+      const userProfile = await this.keycloak.loadUserProfile();
+      this.username = userProfile.firstName || userProfile.username || '';
+    } catch (error) {
+      console.error(
+        'Erreur lors de la récupération du profil utilisateur:',
+        error
+      );
+    }
   }
 
   logout(): Promise<void> {

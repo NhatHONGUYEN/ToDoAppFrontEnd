@@ -22,6 +22,12 @@ import {
 import { delay } from 'rxjs/operators';
 import { FrenchPaginatorIntl } from '../../shared/french-paginator-intl';
 
+interface FilteredTasks {
+  all: Task[];
+  pending: Task[];
+  done: Task[];
+}
+
 @Component({
   selector: 'app-task-list',
   standalone: true,
@@ -46,6 +52,11 @@ import { FrenchPaginatorIntl } from '../../shared/french-paginator-intl';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  filteredTasks: FilteredTasks = {
+    all: [],
+    pending: [],
+    done: [],
+  };
   loading = false;
   showLoading = false;
   error: string | null = null;
@@ -54,9 +65,9 @@ export class TaskListComponent implements OnInit {
 
   // Pagination
   totalItems = 0;
-  pageSize = 10;
+  pageSize = 30; // Augmenter le nombre d'éléments par page
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 25, 50];
+  pageSizeOptions = [10, 30, 50, 100];
 
   constructor(
     private taskService: TaskService,
@@ -82,12 +93,13 @@ export class TaskListComponent implements OnInit {
     }, 500);
 
     this.error = null;
-    this.taskService.list(this.currentStatus, page, size).subscribe({
+    this.taskService.list('all', page, size).subscribe({
       next: (response) => {
         this.tasks = response.content;
         this.totalItems = response.totalElements;
         this.pageIndex = response.number;
         this.pageSize = response.size;
+        this.filterTasks();
         this.loading = false;
         this.showLoading = false;
       },
@@ -100,6 +112,17 @@ export class TaskListComponent implements OnInit {
         );
       },
     });
+  }
+
+  filterTasks() {
+    // Toutes les tâches
+    this.filteredTasks.all = [...this.tasks];
+
+    // Tâches en cours
+    this.filteredTasks.pending = this.tasks.filter((task) => !task.completed);
+
+    // Tâches terminées
+    this.filteredTasks.done = this.tasks.filter((task) => task.completed);
   }
 
   addTask() {
@@ -117,7 +140,7 @@ export class TaskListComponent implements OnInit {
           this.newTaskTitle = '';
           this.loading = false;
           this.notificationService.showSuccess('Tâche créée avec succès');
-          // Recharger les tâches pour mettre à jour la pagination
+          // Recharger les tâches
           this.load();
         },
         error: (err) => {
@@ -136,7 +159,7 @@ export class TaskListComponent implements OnInit {
     this.taskService.delete(id).subscribe({
       next: () => {
         this.notificationService.showSuccess('Tâche supprimée avec succès');
-        // Recharger les tâches pour mettre à jour la pagination
+        // Recharger les tâches
         this.load();
       },
       error: (err) => {

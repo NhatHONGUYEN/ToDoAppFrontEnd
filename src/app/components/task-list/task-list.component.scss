@@ -7,29 +7,72 @@ $green: #4caf50;
 $red: #f44336;
 $spacing-unit: 8px;
 
-// Container
-.task-list-container {
+// Colonnes container
+.task-columns-container {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+}
+
+// Colonne
+.task-column {
+  flex: 1;
+  min-width: 300px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  width: 600px;
-  margin: 10vh auto;
-  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h1,
+  h2 {
+    text-align: center;
+    color: $primary-color;
+    margin-bottom: 16px;
+  }
 
   h1 {
-    display: flex;
-    justify-content: center;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
     font-weight: 500;
-    color: $primary-color;
+  }
+}
+
+// Scroll container
+.task-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 8px;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.05);
   }
 }
 
 // List
 mat-list {
-  padding: $spacing-unit * 2.5 0;
+  padding: $spacing-unit 0;
   display: flex;
   flex-direction: column;
-  gap: $spacing-unit * 1.25;
+  gap: $spacing-unit;
 }
 
 // List items
@@ -38,6 +81,7 @@ mat-list {
   margin-bottom: $spacing-unit;
   border-radius: 4px;
   transition: background-color 0.2s ease;
+  background-color: white;
 
   &:hover {
     background-color: $hover-bg;
@@ -54,26 +98,32 @@ mat-list {
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  padding: 8px;
 }
 
 // Task info section
 .task-info {
   display: flex;
-  width: 15vw;
   gap: $spacing-unit * 1.25;
-  margin: $spacing-unit * 3 0;
+  margin: $spacing-unit 0;
   justify-content: space-between;
   align-items: center;
+  width: 70%;
 
   .task-title-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    overflow: hidden;
   }
 }
 
 // Title styles
 .task-title {
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &.completed {
     text-decoration: line-through;
@@ -85,24 +135,19 @@ mat-list {
 .task-date {
   color: $text-secondary;
   font-size: 0.85rem;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 // Action buttons
 .task-actions {
   display: flex;
-  gap: $spacing-unit;
-}
-
-// Filter chips
-.filter-chips {
-  margin-bottom: $spacing-unit * 3;
+  gap: 4px;
 }
 
 // Form field
 .full-width {
   width: 100%;
-  margin-bottom: $spacing-unit * 3;
+  margin-bottom: $spacing-unit;
 }
 
 // Status indicators
@@ -113,23 +158,63 @@ mat-list {
   color: $red;
 }
 
-// Navigation
-nav button {
-  margin-right: 10px;
+// Status container
+.status-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+// Empty tasks message
 .empty-tasks-message {
   text-align: center;
-  padding: 80px 0;
+  padding: 40px 0;
   color: rgba(0, 0, 0, 0.54);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   mat-icon {
-    font-size: 30px;
-    height: 30px;
-    width: 30px;
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+    margin-bottom: 8px;
   }
 
   p {
-    font-size: 18px;
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+  .task-columns-container {
+    flex-wrap: wrap;
+    height: auto;
+    overflow: visible;
+  }
+
+  .task-column {
+    min-width: calc(50% - 20px);
+    margin-bottom: 20px;
+    height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .task-column {
+    min-width: 100%;
   }
 }

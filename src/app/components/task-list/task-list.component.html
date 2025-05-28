@@ -1,41 +1,204 @@
-<div class="task-list-container">
-  <!-- Section titre -->
-  <h1>Mes tâches</h1>
+<div class="task-columns-container">
+  <!-- Colonne 1: Tri et ajout de tâches -->
+  <div class="task-column">
+    <h1>Mes tâches</h1>
+    <mat-form-field class="full-width">
+      <mat-label>Nouvelle tâche</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newTaskTitle"
+        name="newTaskTitle"
+        placeholder="Entrez une tâche..."
+        (keyup.enter)="addTask()"
+      />
+      <button mat-icon-button matSuffix color="primary" (click)="addTask()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
 
-  <!-- Section formulaire d'ajout de tâche -->
-  <mat-form-field class="full-width">
-    <mat-label>Nouvelle tâche</mat-label>
-    <input
-      matInput
-      [(ngModel)]="newTaskTitle"
-      name="newTaskTitle"
-      placeholder="Entrez une tâche..."
-      (keyup.enter)="addTask()"
-    />
-    <button mat-icon-button matSuffix color="primary" (click)="addTask()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-form-field>
+  <!-- Colonne 2: Toutes les tâches -->
+  <div class="task-column">
+    <h2>Toutes</h2>
+    <!-- Message si aucune tâche -->
+    <div
+      *ngIf="filteredTasks.all.length === 0 && !loading"
+      class="empty-tasks-message"
+    >
+      <mat-icon>info</mat-icon>
+      <p>Aucune tâche disponible</p>
+    </div>
+    <!-- Liste des tâches -->
+    <div class="task-scroll-container">
+      <mat-list *ngIf="filteredTasks.all.length > 0">
+        <mat-list-item *ngFor="let task of filteredTasks.all" class="task-item">
+          <div class="task-content">
+            <!-- Informations de la tâche -->
+            <div class="task-info">
+              <div class="task-title-container">
+                <span class="task-title" [class.completed]="task.completed">{{
+                  task.title
+                }}</span>
+                <span class="task-date">{{ task.dueDate | date }}</span>
+              </div>
+              <mat-icon
+                [color]="task.completed ? 'primary' : 'default'"
+                class="status-icon"
+              >
+                {{ task.completed ? "check_circle" : "more_horiz" }}
+              </mat-icon>
+            </div>
 
-  <!-- Section filtres -->
-  <mat-chip-set aria-label="TodoStatus selection">
-    <mat-chip-option (click)="load('all')" [selected]="currentStatus === 'all'"
-      >Toutes</mat-chip-option
+            <!-- Actions sur la tâche -->
+            <div class="task-actions">
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id]"
+                color="primary"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id, 'edit']"
+                color="primary"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="deleteTask(task.id)"
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+
+  <!-- Colonne 3: Tâches en cours -->
+  <div class="task-column">
+    <h2>En cours</h2>
+    <!-- Message si aucune tâche -->
+    <div
+      *ngIf="filteredTasks.pending.length === 0 && !loading"
+      class="empty-tasks-message"
     >
-    <mat-chip-option
-      (click)="load('pending')"
-      [selected]="currentStatus === 'pending'"
-      >En cours</mat-chip-option
+      <mat-icon>info</mat-icon>
+      <p>Aucune tâche en cours</p>
+    </div>
+    <!-- Liste des tâches -->
+    <div class="task-scroll-container">
+      <mat-list *ngIf="filteredTasks.pending.length > 0">
+        <mat-list-item
+          *ngFor="let task of filteredTasks.pending"
+          class="task-item"
+        >
+          <div class="task-content">
+            <!-- Informations de la tâche -->
+            <div class="task-info">
+              <div class="task-title-container">
+                <span class="task-title">{{ task.title }}</span>
+                <span class="task-date">{{ task.dueDate | date }}</span>
+              </div>
+              <mat-icon class="status-icon">more_horiz</mat-icon>
+            </div>
+
+            <!-- Actions sur la tâche -->
+            <div class="task-actions">
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id]"
+                color="primary"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id, 'edit']"
+                color="primary"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="deleteTask(task.id)"
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+
+  <!-- Colonne 4: Tâches terminées -->
+  <div class="task-column">
+    <h2>Terminées</h2>
+    <!-- Message si aucune tâche -->
+    <div
+      *ngIf="filteredTasks.done.length === 0 && !loading"
+      class="empty-tasks-message"
     >
-    <mat-chip-option
-      (click)="load('done')"
-      [selected]="currentStatus === 'done'"
-      >Terminées</mat-chip-option
-    >
-  </mat-chip-set>
+      <mat-icon>info</mat-icon>
+      <p>Aucune tâche terminée</p>
+    </div>
+    <!-- Liste des tâches -->
+    <div class="task-scroll-container">
+      <mat-list *ngIf="filteredTasks.done.length > 0">
+        <mat-list-item
+          *ngFor="let task of filteredTasks.done"
+          class="task-item"
+        >
+          <div class="task-content">
+            <!-- Informations de la tâche -->
+            <div class="task-info">
+              <div class="task-title-container">
+                <span class="task-title completed">{{ task.title }}</span>
+                <span class="task-date">{{ task.dueDate | date }}</span>
+              </div>
+              <mat-icon color="primary" class="status-icon"
+                >check_circle</mat-icon
+              >
+            </div>
+
+            <!-- Actions sur la tâche -->
+            <div class="task-actions">
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id]"
+                color="primary"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                [routerLink]="['/tasks', task.id, 'edit']"
+                color="primary"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="deleteTask(task.id)"
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
 
   <!-- Section loading et erreur -->
-  <div class="status-container">
+  <div *ngIf="showLoading || error" class="status-container">
     <div *ngIf="showLoading" class="loading-indicator">
       <mat-spinner></mat-spinner>
     </div>
@@ -43,67 +206,4 @@
       {{ error }}
     </div>
   </div>
-
-  <!-- Message si aucune tâche -->
-  <div *ngIf="tasks.length === 0 && !loading" class="empty-tasks-message">
-    <mat-icon>info</mat-icon>
-    <p>Aucune tâche disponible</p>
-  </div>
-
-  <!-- Section liste des tâches -->
-  <mat-list *ngIf="tasks.length > 0">
-    <mat-list-item *ngFor="let task of tasks" class="task-item">
-      <div class="task-content">
-        <!-- Informations de la tâche -->
-        <div class="task-info">
-          <div class="task-title-container">
-            <span class="task-title" [class.completed]="task.completed">{{
-              task.title
-            }}</span>
-            <span class="task-date">{{ task.dueDate | date }}</span>
-          </div>
-          <mat-icon
-            [color]="task.completed ? 'primary' : 'default'"
-            class="status-icon"
-          >
-            {{ task.completed ? "check_circle" : "more_horiz" }}
-          </mat-icon>
-        </div>
-
-        <!-- Actions sur la tâche -->
-        <div class="task-actions">
-          <button
-            mat-icon-button
-            [routerLink]="['/tasks', task.id]"
-            color="primary"
-          >
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            [routerLink]="['/tasks', task.id, 'edit']"
-            color="primary"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="deleteTask(task.id)" color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
-
-  <!-- Pagination -->
-  <mat-paginator
-    *ngIf="totalItems > 0"
-    [length]="totalItems"
-    [pageSize]="pageSize"
-    [pageIndex]="pageIndex"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="handlePageEvent($event)"
-    aria-label="Sélectionner une page"
-    class="mat-elevation-z2"
-  >
-  </mat-paginator>
 </div>
