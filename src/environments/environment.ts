@@ -1,9 +1,11 @@
+// environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api/tasks',
+  apiUrl: '${API_URL_LOCAL}',
   keycloak: {
-    issuer: 'http://localhost:81/realms/todo-backend-local',
-    clientId: 'todo-backend-local',
-    redirectUri: 'http://localhost:4200',
+    issuer: '${KEYCLOAK_ISSUER_URI_LOCAL}',
+    clientId: '${KEYCLOAK_CLIENT_ID_LOCAL}',
+    // Changez cette ligne pour spécifier l'URL complète au lieu de window.location.origin
+    redirectUri: '${FRONTEND_URL_LOCAL}',
   },
 };
