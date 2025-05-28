@@ -19,8 +19,10 @@ import {
   PageEvent,
   MatPaginatorIntl,
 } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { delay } from 'rxjs/operators';
 import { FrenchPaginatorIntl } from '../../shared/french-paginator-intl';
+import { TaskDetailsComponent } from '../task-details/task-details.component';
 
 interface FilteredTasks {
   all: Task[];
@@ -45,6 +47,7 @@ interface FilteredTasks {
     MatCheckboxModule,
     MatSnackBarModule,
     MatPaginatorModule,
+    MatDialogModule,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: FrenchPaginatorIntl }],
   templateUrl: './task-list.component.html',
@@ -71,7 +74,8 @@ export class TaskListComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -166,6 +170,16 @@ export class TaskListComponent implements OnInit {
         this.error = err.message || 'Erreur lors de la suppression de la tâche';
         this.notificationService.showError('Erreur lors de la suppression');
       },
+    });
+  }
+
+  // Ouvrir le dialogue de détails de tâche
+  openTaskDetails(taskId: number | undefined): void {
+    if (taskId === undefined) return;
+
+    this.dialog.open(TaskDetailsComponent, {
+      width: '500px',
+      data: { taskId: taskId },
     });
   }
 

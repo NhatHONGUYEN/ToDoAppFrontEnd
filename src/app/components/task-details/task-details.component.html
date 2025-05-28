@@ -1,42 +1,39 @@
-<div class="task-details-container">
-  <!-- Section titre -->
-  <h1>Détails de la tâche</h1>
+<h2 mat-dialog-title>Détails de la tâche</h2>
 
+<mat-dialog-content>
   <div *ngIf="loading" class="loading">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
 
   <div *ngIf="error" class="error">{{ error }}</div>
 
-  <mat-card *ngIf="task">
-    <mat-card-header>
-      <mat-card-title>{{ task.title }}</mat-card-title>
-      <mat-card-subtitle>{{ task.dueDate | date }}</mat-card-subtitle>
-    </mat-card-header>
+  <div *ngIf="task" class="task-details">
+    <h3>{{ task.title }}</h3>
+    <p class="task-date">{{ task.dueDate | date }}</p>
 
-    <mat-card-content>
-      <p *ngIf="task.description">{{ task.description }}</p>
-      <p *ngIf="!task.description" class="no-description">Aucune description</p>
+    <p *ngIf="task.description">{{ task.description }}</p>
+    <p *ngIf="!task.description" class="no-description">Aucune description</p>
 
-      <div class="status">
-        <mat-icon [color]="task.completed ? 'primary' : 'default'">
-          {{ task.completed ? "check_circle" : "more_horiz" }}
-        </mat-icon>
-        <span>Statut: {{ task.completed ? "Terminée" : "En cours" }}</span>
-      </div>
-    </mat-card-content>
+    <div class="status">
+      <mat-icon [color]="task.completed ? 'primary' : 'default'">
+        {{ task.completed ? "check_circle" : "more_horiz" }}
+      </mat-icon>
+      <span>Statut: {{ task.completed ? "Terminée" : "En cours" }}</span>
+    </div>
+  </div>
+</mat-dialog-content>
 
-    <mat-card-actions>
-      <button mat-button [routerLink]="['/tasks']">
-        <mat-icon>arrow_back</mat-icon> Retour
-      </button>
-      <button
-        mat-button
-        [routerLink]="['/tasks', task.id, 'edit']"
-        color="primary"
-      >
-        <mat-icon>edit</mat-icon> Modifier
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">
+    <mat-icon>close</mat-icon> Fermer
+  </button>
+  <button
+    *ngIf="task"
+    mat-button
+    [routerLink]="['/tasks', task.id, 'edit']"
+    color="primary"
+    (click)="closeDialog()"
+  >
+    <mat-icon>edit</mat-icon> Modifier
+  </button>
+</mat-dialog-actions>

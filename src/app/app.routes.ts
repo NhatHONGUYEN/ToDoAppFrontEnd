@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
-import { TaskDetailsComponent } from './components/task-details/task-details.component';
 import { AppAuthGuard } from './app-auth.guard';
 
 export const routes: Routes = [
@@ -26,11 +25,6 @@ export const routes: Routes = [
     component: TaskFormComponent,
     canActivate: [AppAuthGuard],
     data: { roles: ['USER', 'ADMIN'] },
-  },
-  {
-    path: 'tasks/:id',
-    component: TaskDetailsComponent,
-    canActivate: [AppAuthGuard],
   },
   {
     path: '**',

@@ -53,7 +53,7 @@
             <div class="task-actions">
               <button
                 mat-icon-button
-                [routerLink]="['/tasks', task.id]"
+                (click)="openTaskDetails(task.id)"
                 color="primary"
               >
                 <mat-icon>visibility</mat-icon>
@@ -111,7 +111,7 @@
             <div class="task-actions">
               <button
                 mat-icon-button
-                [routerLink]="['/tasks', task.id]"
+                (click)="openTaskDetails(task.id)"
                 color="primary"
               >
                 <mat-icon>visibility</mat-icon>
@@ -171,7 +171,7 @@
             <div class="task-actions">
               <button
                 mat-icon-button
-                [routerLink]="['/tasks', task.id]"
+                (click)="openTaskDetails(task.id)"
                 color="primary"
               >
                 <mat-icon>visibility</mat-icon>
