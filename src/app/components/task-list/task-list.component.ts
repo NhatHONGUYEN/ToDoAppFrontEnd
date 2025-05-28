@@ -14,8 +14,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginatorModule,
+  PageEvent,
+  MatPaginatorIntl,
+} from '@angular/material/paginator';
 import { delay } from 'rxjs/operators';
+import { FrenchPaginatorIntl } from '../../shared/french-paginator-intl';
 
 @Component({
   selector: 'app-task-list',
@@ -35,6 +40,7 @@ import { delay } from 'rxjs/operators';
     MatSnackBarModule,
     MatPaginatorModule,
   ],
+  providers: [{ provide: MatPaginatorIntl, useClass: FrenchPaginatorIntl }],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
 })
