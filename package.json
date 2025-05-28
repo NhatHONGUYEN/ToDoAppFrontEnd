@@ -3,13 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "config": "node set-env.js",
-    "config:prod": "node set-env.js production",
-    "start": "npm run config && ng serve",
-    "start:local": "npm run config && ng serve --configuration=development",
-    "build": "npm run config:prod && ng build --configuration=production",
-    "build:dev": "npm run config && ng build --configuration=development",
-    "watch": "npm run config && ng build --watch --configuration development",
+    "start": "ng serve",
+    "start:local": "ng serve --configuration=development",
+    "build": "ng build --configuration=production",
+    "build:dev": "ng build --configuration=development",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
