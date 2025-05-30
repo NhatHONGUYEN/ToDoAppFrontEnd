@@ -72,3 +72,72 @@ button {
     margin-right: 4px;
   }
 }
+
+/* Media queries pour la responsivité */
+@media screen and (max-width: 768px) {
+  h2[mat-dialog-title] {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+
+  .task-details {
+    h3 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  button {
+    font-size: 14px;
+
+    mat-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h2[mat-dialog-title] {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  mat-dialog-content {
+    max-height: 70vh;
+    padding: 0 10px;
+  }
+
+  .task-details {
+    h3 {
+      font-size: 1.1rem;
+    }
+
+    .task-date {
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .status {
+    margin-top: 15px;
+    font-size: 13px;
+  }
+
+  mat-dialog-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}

@@ -16,3 +16,33 @@
   margin-right: auto;
   margin-left: 20px;
 }
+
+/* Media queries pour la responsivité */
+@media screen and (max-width: 768px) {
+  .header {
+    width: 90%;
+    padding: 8px 15px;
+  }
+
+  .welcome-message {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .header {
+    width: 95%;
+    padding: 8px 10px;
+    margin: 10px auto 0 auto;
+  }
+
+  .welcome-message {
+    font-size: 12px;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+}

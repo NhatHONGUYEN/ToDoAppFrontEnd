@@ -48,6 +48,11 @@ $spacing-unit: 8px;
   }
 }
 
+// Colonne de nouvelle tâche
+.new-task-column {
+  background-color: #e8f0fe;
+}
+
 // Scroll container
 .task-scroll-container {
   flex: 1;
@@ -205,24 +210,169 @@ mat-list {
   }
 }
 
-// Responsive adjustments
-@media (max-width: 1200px) {
+// Media queries pour la responsivité
+@media screen and (max-width: 1200px) {
+  // Layout pour tablettes
   .task-columns-container {
-    flex-wrap: wrap;
-    height: auto;
-    overflow: visible;
-    padding: 20px;
+    width: 98%;
+    padding: 20px 10px;
+    gap: 15px;
   }
 
   .task-column {
-    min-width: calc(50% - 20px);
-    margin-bottom: 20px;
-    height: 500px;
+    min-width: 220px;
+    padding: 12px;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .task-actions {
+    gap: 2px;
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 900px) {
+  // Passer à 2 colonnes
+  .task-columns-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 15px 10px;
+    overflow-y: auto;
+  }
+
   .task-column {
-    min-width: 100%;
+    flex: 0 0 calc(50% - 15px);
+    margin-bottom: 15px;
+    min-height: 300px;
+    max-height: 400px;
+  }
+
+  .new-task-column {
+    flex: 0 0 100%;
+    min-height: auto;
+    max-height: none;
+  }
+
+  .task-scroll-container {
+    max-height: 320px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  // Layout pour mobile
+  body,
+  html {
+    overflow-y: auto;
+    height: 100%;
+    position: relative;
+  }
+
+  .task-columns-container {
+    flex-direction: column;
+    padding: 10px 0;
+    gap: 15px;
+    height: auto;
+    margin-bottom: 60px;
+    overflow-y: visible;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .task-column {
+    flex: 0 0 100%;
+    width: 90%;
+    margin: 0 auto 15px auto;
+    min-height: auto;
+    max-height: none;
+    padding: 12px;
+    box-sizing: border-box;
+
+    h1 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+  }
+
+  .new-task-column {
+    margin-bottom: 15px;
+    position: relative; /* Suppression du sticky */
+  }
+
+  .task-scroll-container {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .task-info {
+    width: 60%;
+  }
+
+  .task-actions {
+    button {
+      transform: scale(0.9);
+    }
+  }
+
+  // Améliorer l'affichage des tâches sur mobile
+  .task-item {
+    margin-bottom: 10px;
+  }
+
+  mat-list {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .task-columns-container {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .task-column {
+    width: 94%;
+    padding: 10px;
+  }
+
+  .task-content {
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .task-info {
+    width: 65%;
+  }
+
+  .task-title {
+    font-size: 14px;
+  }
+
+  .task-date {
+    font-size: 12px;
+  }
+
+  .task-actions {
+    button {
+      transform: scale(0.8);
+      margin: 0;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+    }
   }
 }

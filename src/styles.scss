@@ -35,3 +35,16 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
+
+/* Media query pour permettre le défilement sur mobile */
+@media screen and (max-width: 600px) {
+  html,
+  body {
+    height: 100%;
+    overflow: auto !important;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}

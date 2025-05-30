@@ -25,3 +25,39 @@ $primary-color: #1976d2;
 mat-checkbox {
   margin-left: 10px;
 }
+
+/* Media queries pour la responsivité */
+@media screen and (max-width: 768px) {
+  .task-form-container {
+    width: 80%;
+    margin: 8vh auto;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .task-form-container {
+    width: 95%;
+    margin: 5vh auto;
+    padding: 0 10px;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+
+  .task-form {
+    gap: 5px;
+  }
+
+  mat-form-field {
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 16px;
+  }
+}
